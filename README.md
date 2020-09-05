@@ -1,0 +1,1 @@
+# switzerland-quarantine-list
