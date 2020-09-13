@@ -17,14 +17,23 @@ ui <-
 
   navbarPage(
 
-    title = "Switzerland Quarantine List",
+    title = div(
+      h3("Switzerland Quarantine",
+        style = "position:absolute;left:75px;margin-top:-2px;"
+      ),
+      img(
+        src = "logo.png",
+        style = "margin-top:-20px;padding-right:280px;padding-bottom:10px;padding-top:10px;",
+        height = 60
+      )
+    ),
 
     windowTitle = "Switzerland Quarantine List",
 
     tabPanel(
       title = "Graph",
 
-      icon = icon(name = "map-marked-alt"),
+      icon = icon(name = "chart-bar"),
 
       # - Error and waiting functions to improve UX -
       use_sever(),
@@ -47,7 +56,7 @@ ui <-
     tabPanel(
       title = "Data",
 
-      icon = icon(name = "chart-bar")
+      icon = icon(name = "table")
     )
   )
 
