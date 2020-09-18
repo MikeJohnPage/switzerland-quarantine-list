@@ -6,6 +6,7 @@ library(sever)
 library(waiter)
 library(echarts4r)
 library(stringr)
+library(tidyr)
 
 # ---- Load data ----
 data <- read.csv("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv",
@@ -24,6 +25,8 @@ cases <-
     `Cumulative 14 day case rate per 100,000` = Cumulative_number_for_14_days_of_COVID.19_cases_per_100000
   ) %>%
   mutate(Date = as.Date(Date, format = "%d/%m/%Y")) %>%
+  # Fill missing dates for each country with NA
+  complete(nesting(Country), Date = seq(min(Date), max(Date), by = "day")) %>%
   filter(Date >= "2020-02-01") %>%
   arrange(Country, Date) %>%
   mutate(Date = format(Date, format = "%b %d"),
