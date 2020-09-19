@@ -141,7 +141,23 @@ server <-
 
     # - Data -
     output$data <- renderDT(
-      datatable(cases,
+      datatable(
+        data %>%
+          as_tibble() %>%
+          select(
+            Country = countriesAndTerritories,
+            Date = dateRep,
+            `Cumulative 14 day case rate per 100,000` = Cumulative_number_for_14_days_of_COVID.19_cases_per_100000
+          ) %>%
+          mutate(Date = as.Date(Date, format = "%d/%m/%Y")) %>%
+          # Fill missing dates for each country with NA
+          complete(nesting(Country), Date = seq(min(Date), max(Date), by = "day")) %>%
+          filter(Date >= "2020-02-01") %>%
+          arrange(Country, desc(Date)) %>%
+          mutate(
+            Date = format(Date, format = "%b %d"),
+            Country = str_replace_all(Country, "_", " ")
+          ),
         rownames = FALSE,
         escape = FALSE,
         extensions = c("ColReorder"),
