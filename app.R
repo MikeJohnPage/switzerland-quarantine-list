@@ -77,10 +77,10 @@ ui <-
               inputId = "countries",
               label = div(
                 h2("Instructions"),
-                p("Any countries that pass above the red threshold line on the graph",
-                  tags$b(tags$i("may")), "soon enter Switzerland's quarantine list."),
-                br(),
-                p("Select and remove countries using the drop-down list below:")),
+                p("Any countries that pass above the red threshold line",
+                  tags$b(tags$i("may")),
+                  "soon enter Switzerland's quarantine list. Select and remove countries
+                  using the drop-down list below:")),
               choices = cases$Country,
               selected = c("Switzerland", "Italy"),
               multiple = TRUE
