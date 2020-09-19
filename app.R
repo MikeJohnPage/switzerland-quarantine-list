@@ -75,15 +75,20 @@ ui <-
           sidebarPanel(
             selectInput(
               inputId = "countries",
-              label = "Select countries to display:",
+              label = div(
+                h2("Instructions"),
+                p("Any countries that pass above the red threshold line on the graph",
+                  tags$b(tags$i("may")), "soon enter Switzerland's quarantine list."),
+                br(),
+                p("Select and remove countries using the drop-down list below:")),
               choices = cases$Country,
-              selected = c("Switzerland", "Italy", "United Kingdom"),
+              selected = c("Switzerland", "Italy"),
               multiple = TRUE
             )
           ),
           mainPanel(
             # - Line plot -
-            echarts4rOutput("covid_plot", height = 800))
+            echarts4rOutput("covid_plot"))
         ),
 
       )
@@ -111,10 +116,17 @@ server <-
         e_chart(x = Date) %>%
         e_line(serie = `Cumulative 14 day case rate per 100,000`, smooth = TRUE) %>%
         e_title("COVID-19 Infections", "Cases per 100,000") %>%
+        e_mark_line(data = list(yAxis = 60,
+                                itemStyle = list(color = "red")),
+                    symbol = "none",
+                    symbolSize = 10,
+                    title = "Threshold") %>%
         e_theme("westeros") %>%
-        e_legend() %>%
+        e_legend(left = "right") %>%
         e_tooltip(trigger = "axis") %>%
-        e_datazoom(type = "slider")
+        e_datazoom(type = "slider",
+                   options = list(displayZoomButtons = FALSE)) %>%
+        e_toolbox(show = FALSE)
     })
 
     # - Data -
